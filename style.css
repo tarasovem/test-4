@@ -3,9 +3,8 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #213547;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,72 +24,49 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
+  flex-direction: column;
 }
 
-h1 {
+.title {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
-#app {
+.list {
   max-width: 1280px;
+  min-width: 500px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 32px;
   text-align: center;
+  counter-reset: item;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+.list__item {
+  display: flex;
+  column-gap: 20px;
+  border-bottom: 1px solid #252626;
+  padding: 9px 19px;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font-size: 13px;
+  cursor: move;
+  transition: background-color 0.3s ease-out;
+
+  &::before {
+    content: counter(item);
+    counter-increment: item;
+  }
+
+  &:first-child {
+    border-top: 1px solid #252626;
+  }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.selected {
+  opacity: 0.6;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in;
 }

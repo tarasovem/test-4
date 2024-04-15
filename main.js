@@ -1,24 +1,69 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+const DEFAULT_LIST = [
+    "Авокадо",
+    "Апельсин",
+    "Арбуз",
+    "Банан",
+    "Виноград",
+    "Грейпфрут",
+    "Яблоко",
+];
 
-setupCounter(document.querySelector('#counter'))
+const listElement = document.querySelector("#list");
+
+function renderList(list) {
+    list.forEach(item => {
+        const li = document.createElement("li");
+        li.classList.add("list__item");
+        li.setAttribute("draggable", "true");
+        li.innerText = item;
+        listElement.append(li);
+    });
+}
+
+renderList(DEFAULT_LIST);
+
+listElement.addEventListener("dragstart", ({target}) => {
+    target.classList.add("selected");
+});
+
+listElement.addEventListener("dragend", ({target}) => {
+    target.classList.remove("selected");
+});
+
+const getNextElement = (cursorPosition, currentElement) => {
+    const currentElementCoord = currentElement.getBoundingClientRect();
+    const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
+
+    const nextElement = (cursorPosition < currentElementCenter) ?
+        currentElement :
+        currentElement.nextElementSibling;
+
+    return nextElement;
+};
+
+listElement.addEventListener("dragover", (evt) => {
+    evt.preventDefault();
+    // debugger;
+    const activeElement = listElement.querySelector(".selected");
+    const currentElement = evt.target;
+    const isMoveable = activeElement !== currentElement && currentElement.classList.contains(`list__item`);
+
+    if (!isMoveable) {
+        return;
+    }
+
+    const nextElement = getNextElement(evt.clientY, currentElement);
+
+    if (
+        nextElement &&
+        activeElement === nextElement.previousElementSibling ||
+        activeElement === nextElement
+    ) {
+        return;
+    }
+
+    listElement.insertBefore(activeElement, nextElement);
+});
+
