@@ -66,4 +66,3 @@ listElement.addEventListener("dragover", (evt) => {
 
     listElement.insertBefore(activeElement, nextElement);
 });
-
